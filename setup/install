@@ -1,0 +1,21 @@
+#!/bin/bash
+set -e
+CONCOURSE_DIR="/usr/local/concourse"
+
+mkdir -p $CONCOURSE_DIR
+
+pushd $CONCOURSE_DIR
+  # Directory structure
+  mkdir -p ./data
+  mkdir -p ./keys/web
+  mkdir -p ./keys/worker
+
+  # Make some keys
+  ssh-keygen -t rsa -f ./keys/web/tsa_host_key -N ''
+  ssh-keygen -t rsa -f ./keys/web/session_signing_key -N ''
+  ssh-keygen -t rsa -f ./keys/worker/worker_key -N ''
+
+  # Authorize some keys
+  cp ./keys/worker/worker_key.pub ./keys/web/authorized_worker_keys
+  cp ./keys/web/tsa_host_key.pub ./keys/worker
+popd

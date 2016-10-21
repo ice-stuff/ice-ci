@@ -1,0 +1,30 @@
+concourse-db:
+  image: postgres:9.5
+  volumes: ["./data:/database"]
+  environment:
+    POSTGRES_DB: concourse
+    POSTGRES_USER: concourse
+    POSTGRES_PASSWORD: CHANGE_ME
+    PGDATA: /database
+
+concourse-web:
+  image: concourse/concourse
+  links: [concourse-db]
+  command: web
+  ports: ["8080:8080"]
+  volumes: ["./keys/web:/concourse-keys"]
+  environment:
+    CONCOURSE_BASIC_AUTH_USERNAME: CHANGE_ME
+    CONCOURSE_BASIC_AUTH_PASSWORD: CHANGE_ME
+    CONCOURSE_EXTERNAL_URL: "${CONCOURSE_EXTERNAL_URL}"
+    CONCOURSE_POSTGRES_DATA_SOURCE: |-
+      postgres://concourse:CHANGE_ME@concourse-db:5432/concourse?sslmode=disable
+
+concourse-worker:
+  image: concourse/concourse
+  privileged: true
+  links: [concourse-web]
+  command: worker
+  volumes: ["./keys/worker:/concourse-keys"]
+  environment:
+    CONCOURSE_TSA_HOST: concourse-web

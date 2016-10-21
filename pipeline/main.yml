@@ -1,0 +1,25 @@
+groups:
+  - name: main
+    jobs:
+      - build-ice-docker-image
+
+resources:
+  - name: ice
+    type: git
+    source:
+      uri: https://github.com/ice-stuff/ice
+      branch: wip-integrate-agent
+
+  - name: ice-docker-image
+    type: docker-image
+    source:
+      repository: glestaris/ice-ci
+      tag: latest
+      username: {{DockerHubUsername}}
+      password: {{DockerHubPassword}}
+
+jobs:
+  - name: build-ice-docker-image
+    plan:
+      - get: ice
+      - put: ice-docker-image
