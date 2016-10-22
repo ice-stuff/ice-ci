@@ -2,5 +2,4 @@
 set -e
 set -x
 
-export CONCOURSE_EXTERNAL_URL=http://83.212.123.54:8080
 docker-compose up -d
