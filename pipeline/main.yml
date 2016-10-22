@@ -24,3 +24,5 @@ jobs:
     plan:
       - get: ice
       - put: ice-docker-image
+        params:
+          build: ice
