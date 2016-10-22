@@ -20,6 +20,7 @@ resources:
 
 jobs:
   - name: build-ice-docker-image
+    public: true
     plan:
       - get: ice
       - put: ice-docker-image
