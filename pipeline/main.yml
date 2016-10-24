@@ -31,9 +31,11 @@ jobs:
     public: true
     plan:
       - get: ice
+      - get: ice-ci
       - put: ice-docker-image
         params:
-          build: ice
+          build: .
+          dockerfile: ice-ci/dockerfiles/ice-ci/Dockerfile
 
   - name: run-ice-unit-tests
     public: true
