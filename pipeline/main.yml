@@ -1,6 +1,8 @@
 groups:
   - name: main
     jobs:
+      - run-ice-unit-tests
+      - run-ice-integration-tests
       - build-ice-docker-image
 
 resources:
@@ -9,6 +11,12 @@ resources:
     source:
       uri: https://github.com/ice-stuff/ice
       branch: wip-integrate-agent
+
+  - name: ice-ci
+    type: git
+    source:
+      uri: https://github.com/ice-stuff/ice-ci
+      branch: master
 
   - name: ice-docker-image
     type: docker-image
@@ -26,3 +34,27 @@ jobs:
       - put: ice-docker-image
         params:
           build: ice
+
+  - name: run-ice-unit-tests
+    public: true
+    plan:
+      - get: ice
+        trigger: true
+      - get: ice-ci
+      - task: run-ice-unit-tests
+        privileged: true
+        file: ice-ci/pipeline/tasks/run-ice-unit-tests.yml
+
+  - name: run-ice-integration-tests
+    public: true
+    plan:
+      - get: ice
+        trigger: true
+        passed:
+          - run-ice-unit-tests
+      - get: ice-ci
+        passed:
+          - run-ice-unit-tests
+      - task: run-ice-integration-tests
+        privileged: true
+        file: ice-ci/pipeline/tasks/run-ice-integration-tests.yml

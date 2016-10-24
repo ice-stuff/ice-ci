@@ -1,0 +1,12 @@
+---
+platform: linux
+image_resource:
+  type: docker-image
+  source:
+    repository: glestaris/ice-ci
+    tag: latest
+inputs:
+  - name: ice-ci
+  - name: ice
+run:
+  path: ice-ci/pipeline/tasks/run-ice-integration-tests.sh
