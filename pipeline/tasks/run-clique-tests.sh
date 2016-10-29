@@ -4,7 +4,10 @@ set -x
 BASE_PATH=$(cd $(dirname $BASH_SOURCE)/../..; pwd)
 source $BASE_PATH/pipeline/tasks/utils.sh
 
-cd clique/
+# Move to GOPATH
+mkdir -p $GOPATH/src/github.com/ice-stuff
+cp -r clique $GOPATH/src/github.com/ice-stuff/clique
+cd $GOPATH/src/github.com/ice-stuff/clique/
 
 # Golang dependencies
 go get github.com/Masterminds/glide
