@@ -2,7 +2,7 @@
 set -e
 set -x
 BASE_PATH=$(cd $(dirname $BASH_SOURCE)/../..; pwd)
-source $BASE_PATH/pipeline/tasks/utils.sh
+source $BASE_PATH/pipeline/tasks/docker-utils.sh
 
 cd ice/
 
