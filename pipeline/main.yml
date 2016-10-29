@@ -5,12 +5,19 @@ groups:
       - run-ice-integration-tests
       - build-ice-ci-image
       - run-clique-tests
+      - deploy-ice-registry
 
 resources:
   - name: ice
     type: git
     source:
       uri: https://github.com/ice-stuff/ice
+      branch: master
+
+  - name: ice-registry-cf
+    type: git
+    source:
+      uri: https://github.com/ice-stuff/ice-registry-cf
       branch: master
 
   - name: clique
@@ -32,6 +39,16 @@ resources:
       tag: latest
       username: {{DockerHubUsername}}
       password: {{DockerHubPassword}}
+
+  - name: ice-registry-cf-deployment
+    type: cf
+    source:
+      api: https://api.run.pivotal.io
+      username: {{PWSUsername}}
+      password: {{PWSPassword}}
+      organization: glestaris-pivotal-org
+      space: development
+      skip_cert_check: false
 
 jobs:
   - name: build-ice-ci-image
@@ -66,6 +83,23 @@ jobs:
       - task: run-ice-integration-tests
         privileged: true
         file: ice-ci/pipeline/tasks/run-ice-integration-tests.yml
+
+  - name: deploy-ice-registry
+    public: true
+    serial: true
+    plan:
+      - get: ice
+        passed:
+          - run-ice-integration-tests
+      - get: ice-ci
+      - get: ice-registry-cf
+      - task: setup-ice-registry-cf-directory
+        file: ice-ci/pipeline/tasks/setup-ice-registry-cf-directory.yml
+      - put: ice-registry-cf-deployment
+        params:
+          manifest: ice-cf/manifest.yml
+          current_app_name: ice_registry
+          path: ice-cf
 
   - name: run-clique-tests
     public: true

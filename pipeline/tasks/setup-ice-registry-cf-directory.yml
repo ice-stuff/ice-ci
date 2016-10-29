@@ -1,0 +1,15 @@
+---
+platform: linux
+image_resource:
+  type: docker-image
+  source:
+    repository: busybox
+    tag: latest
+inputs:
+  - name: ice
+  - name: ice-registry-cf
+  - name: ice-ci
+outputs:
+  - name: ice-cf
+run:
+  path: ice-ci/pipeline/tasks/setup-ice-registry-cf-directory.sh
