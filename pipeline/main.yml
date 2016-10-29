@@ -3,7 +3,8 @@ groups:
     jobs:
       - run-ice-unit-tests
       - run-ice-integration-tests
-      - build-ice-docker-image
+      - build-ice-ci-image
+      - run-clique-tests
 
 resources:
   - name: ice
@@ -12,13 +13,19 @@ resources:
       uri: https://github.com/ice-stuff/ice
       branch: master
 
+  - name: clique
+    type: git
+    source:
+      uri: https://github.com/ice-stuff/clique
+      branch: master
+
   - name: ice-ci
     type: git
     source:
       uri: https://github.com/ice-stuff/ice-ci
       branch: master
 
-  - name: ice-docker-image
+  - name: ice-ci-image
     type: docker-image
     source:
       repository: glestaris/ice-ci
@@ -27,12 +34,11 @@ resources:
       password: {{DockerHubPassword}}
 
 jobs:
-  - name: build-ice-docker-image
+  - name: build-ice-ci-image
     public: true
     plan:
-      - get: ice
       - get: ice-ci
-      - put: ice-docker-image
+      - put: ice-ci-image
         params:
           build: .
           dockerfile: ice-ci/dockerfiles/ice-ci/Dockerfile
@@ -60,3 +66,13 @@ jobs:
       - task: run-ice-integration-tests
         privileged: true
         file: ice-ci/pipeline/tasks/run-ice-integration-tests.yml
+
+  - name: run-clique-tests
+    public: true
+    plan:
+      - get: clique
+        trigger: true
+      - get: ice-ci
+      - task: run-clique-tests
+        privileged: true
+        file: ice-ci/pipeline/tasks/run-clique-tests.yml
