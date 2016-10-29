@@ -9,7 +9,7 @@ help:
 
 ###### Remote Concourse ########################################################
 
-.secrets.yml:
+.secrets.yml: ./pipeline/secrets/*
 	./pipeline/secrets/compile > .secrets.yml
 
 pipeline: .secrets.yml
