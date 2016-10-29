@@ -15,8 +15,3 @@ RUN set -x && \
   rmdir docker && \
   rm docker.tgz && \
   docker -v
-
-COPY ice/requirements.txt ice/dev-requirements.txt ./
-RUN pip install -r dev-requirements.txt && \
-  rm ./requirements.txt && \
-  rm ./dev-requirements.txt
