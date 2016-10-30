@@ -104,8 +104,6 @@ jobs:
         passed:
           - run-ice-unit-tests
       - get: ice-ci
-        passed:
-          - run-ice-unit-tests
       - task: run-ice-integration-tests
         privileged: true
         file: ice-ci/pipeline/tasks/run-ice-integration-tests.yml
