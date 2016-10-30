@@ -4,7 +4,7 @@ set -x
 
 # Move to GOPATH
 mkdir -p $GOPATH/src/github.com/ice-stuff
-cp -r clique $GOPATH/src/github.com/ice-stuff/clique
+cp -r clique $GOPATH/src/github.com/ice-stuff
 cd $GOPATH/src/github.com/ice-stuff/clique/
 
 # Golang dependencies

@@ -6,7 +6,7 @@ image_resource:
     repository: golang
     tag: "1.7"
 inputs:
-  - name: ice-ci
   - name: clique
+  - name: ice-ci
 run:
   path: ice-ci/pipeline/tasks/run-clique-tests.sh
