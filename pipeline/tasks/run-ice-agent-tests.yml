@@ -1,0 +1,15 @@
+---
+platform: linux
+image_resource:
+  type: docker-image
+  source:
+    repository: glestaris/ice-agent-ci
+    tag: latest
+inputs:
+  - name: ice-agent
+  - name: ice-ci
+outputs:
+  - name: ice-agent-bin
+run:
+  user: ice
+  path: ice-ci/pipeline/tasks/run-ice-agent-tests.sh

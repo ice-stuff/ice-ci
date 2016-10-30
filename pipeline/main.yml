@@ -5,6 +5,7 @@ groups:
       - run-ice-integration-tests
       - run-clique-tests
       - deploy-ice-registry
+      - run-ice-agent-tests
   - name: ci-images
     jobs:
       - build-ice-ci-image
@@ -135,3 +136,13 @@ jobs:
       - task: run-clique-tests
         privileged: true
         file: ice-ci/pipeline/tasks/run-clique-tests.yml
+
+  - name: run-ice-agent-tests
+    public: true
+    plan:
+      - get: ice-agent
+        trigger: true
+      - get: ice-ci
+      - task: run-ice-agent-tests
+        privileged: true
+        file: ice-ci/pipeline/tasks/run-ice-agent-tests.yml
