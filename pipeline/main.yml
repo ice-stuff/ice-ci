@@ -3,9 +3,12 @@ groups:
     jobs:
       - run-ice-unit-tests
       - run-ice-integration-tests
-      - build-ice-ci-image
       - run-clique-tests
       - deploy-ice-registry
+  - name: ci-images
+    jobs:
+      - build-ice-ci-image
+      - build-ice-agent-ci-image
 
 resources:
   - name: ice
@@ -26,6 +29,12 @@ resources:
       uri: https://github.com/ice-stuff/clique
       branch: master
 
+  - name: ice-agent
+    type: git
+    source:
+      uri: https://github.com/ice-stuff/ice-agent
+      branch: master
+
   - name: ice-ci
     type: git
     source:
@@ -36,6 +45,14 @@ resources:
     type: docker-image
     source:
       repository: glestaris/ice-ci
+      tag: latest
+      username: {{DockerHubUsername}}
+      password: {{DockerHubPassword}}
+
+  - name: ice-agent-ci-image
+    type: docker-image
+    source:
+      repository: glestaris/ice-agent-ci
       tag: latest
       username: {{DockerHubUsername}}
       password: {{DockerHubPassword}}
@@ -59,6 +76,15 @@ jobs:
         params:
           build: .
           dockerfile: ice-ci/dockerfiles/ice-ci/Dockerfile
+
+  - name: build-ice-agent-ci-image
+    public: true
+    plan:
+      - get: ice-agent
+      - put: ice-agent-ci-image
+        params:
+          build: .
+          dockerfile: ice-agent/Dockerfile
 
   - name: run-ice-unit-tests
     public: true
