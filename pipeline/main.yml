@@ -4,6 +4,7 @@ groups:
       - run-ice-unit-tests
       - run-ice-integration-tests
       - run-clique-tests
+      - run-clique-iperf-tests
       - deploy-ice-registry
       - run-ice-agent-tests
   - name: ci-images
@@ -136,6 +137,18 @@ jobs:
       - task: run-clique-tests
         privileged: true
         file: ice-ci/pipeline/tasks/run-clique-tests.yml
+
+  - name: run-clique-iperf-tests
+    public: true
+    plan:
+      - get: clique
+        trigger: true
+        passed:
+          - run-clique-tests
+      - get: ice-ci
+      - task: run-clique-iperf-tests
+        privileged: true
+        file: ice-ci/pipeline/tasks/run-clique-iperf-tests.yml
 
   - name: run-ice-agent-tests
     public: true
