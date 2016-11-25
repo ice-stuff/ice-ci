@@ -13,8 +13,8 @@ help:
 	./pipeline/secrets/compile > .secrets.yml
 
 pipeline: .secrets.yml
-	fly -t ice-ci expose-pipeline --pipeline main
 	fly -t ice-ci set-pipeline \
 		-p main \
 		-c ./pipeline/main.yml \
 		-l .secrets.yml
+	fly -t ice-ci expose-pipeline --pipeline main
