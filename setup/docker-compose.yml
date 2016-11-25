@@ -3,8 +3,8 @@ concourse-db:
   volumes: ["./data:/database"]
   environment:
     POSTGRES_DB: concourse
-    POSTGRES_USER: concourse
-    POSTGRES_PASSWORD: 34p0stgressPa$$w0rd87
+    POSTGRES_USER: CHANGE_ME
+    POSTGRES_PASSWORD: CHANGE_ME
     PGDATA: /database
 
 concourse-web:
@@ -15,11 +15,11 @@ concourse-web:
   volumes: ["./keys/web:/concourse-keys"]
   environment:
     CONCOURSE_LOG_DB_QUERIES: 1
-    CONCOURSE_BASIC_AUTH_USERNAME: george
-    CONCOURSE_BASIC_AUTH_PASSWORD: georgeConcourse12
+    CONCOURSE_BASIC_AUTH_USERNAME: CHANGE_ME
+    CONCOURSE_BASIC_AUTH_PASSWORD: CHANGE_ME
     CONCOURSE_EXTERNAL_URL: http://snf-726814.vm.okeanos.grnet.gr/
     CONCOURSE_POSTGRES_DATA_SOURCE: |-
-      postgres://concourse:34p0stgressPa$$w0rd87@concourse-db:5432/concourse?sslmode=disable
+      postgres://CHANGE_ME:CHANGE_ME@concourse-db:5432/concourse?sslmode=disable
 
 concourse-worker:
   image: concourse/concourse
