@@ -13,5 +13,5 @@ make deps
 go get github.com/onsi/ginkgo/ginkgo
 
 # Build ant test
-make go-vet
+make lint
 make test
