@@ -4,7 +4,7 @@ concourse-db:
   environment:
     POSTGRES_DB: concourse
     POSTGRES_USER: concourse
-    POSTGRES_PASSWORD: CHANGE_ME
+    POSTGRES_PASSWORD: 34p0stgressPa$$w0rd87
     PGDATA: /database
 
 concourse-web:
@@ -15,11 +15,11 @@ concourse-web:
   volumes: ["./keys/web:/concourse-keys"]
   environment:
     CONCOURSE_LOG_DB_QUERIES: 1
-    CONCOURSE_BASIC_AUTH_USERNAME: CHANGE_ME
-    CONCOURSE_BASIC_AUTH_PASSWORD: CHANGE_ME
-    CONCOURSE_EXTERNAL_URL: "http://snf-726814.vm.okeanos.grnet.gr:80/"
+    CONCOURSE_BASIC_AUTH_USERNAME: george
+    CONCOURSE_BASIC_AUTH_PASSWORD: georgeConcourse12
+    CONCOURSE_EXTERNAL_URL: http://snf-726814.vm.okeanos.grnet.gr/
     CONCOURSE_POSTGRES_DATA_SOURCE: |-
-      postgres://concourse:CHANGE_ME@concourse-db:5432/concourse?sslmode=disable
+      postgres://concourse:34p0stgressPa$$w0rd87@concourse-db:5432/concourse?sslmode=disable
 
 concourse-worker:
   image: concourse/concourse
@@ -30,8 +30,8 @@ concourse-worker:
   environment:
     CONCOURSE_TSA_HOST: concourse-web
 
-conourse-haproxy:
-  image: haproxy:1.5
+concourse-nginx:
+  image: nginx:1.11
   links: [concourse-web]
-  volumes: ["/usr/local/concourse/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro"]
   ports: ["80:80"]
+  volumes: ["/usr/local/concourse/nginx.conf:/etc/nginx/nginx.conf"]
