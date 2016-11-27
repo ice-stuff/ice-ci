@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-CONCOURSE_DIR="/usr/local/concourse"
+CONCOURSE_DIR="/opt/ice-ci"
 
 mkdir -p $CONCOURSE_DIR
 
