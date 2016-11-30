@@ -11,7 +11,7 @@ concourse-web:
   image: concourse/concourse
   links: [concourse-db]
   command: web
-  ports: ["8080:8080"]
+  ports: ["127.0.0.1:8080:8080"]
   volumes: ["./keys/web:/concourse-keys"]
   environment:
     CONCOURSE_LOG_DB_QUERIES: 1
@@ -29,9 +29,3 @@ concourse-worker:
   volumes: ["./keys/worker:/concourse-keys"]
   environment:
     CONCOURSE_TSA_HOST: concourse-web
-
-concourse-nginx:
-  image: nginx:1.11
-  links: [concourse-web]
-  ports: ["80:80"]
-  volumes: ["/opt/ice-ci/nginx.conf:/etc/nginx/nginx.conf"]

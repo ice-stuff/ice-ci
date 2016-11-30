@@ -1,0 +1,19 @@
+#!/bin/bash
+set -e
+
+cd $(dirname $BASH_SOURCE)
+
+case $1 in
+"up")
+	docker-compose up -d
+	;;
+"down")
+	docker-compose down
+	;;
+"run")
+	docker-compose up
+	;;
+*)
+	echo "[ERROR] Please provide argument up, down or run"
+	;;
+esac
