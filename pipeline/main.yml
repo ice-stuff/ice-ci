@@ -7,10 +7,15 @@ groups:
       - run-clique-iperf-tests
       - deploy-ice-registry
       - run-ice-agent-tests
+  - name: dissertation
+    jobs:
+      - bump-dissertation-version
+      - build-dissertation
   - name: ci-images
     jobs:
       - build-ice-ci-image
       - build-ice-agent-ci-image
+      - build-dissertation-image 
 
 resources:
   - name: ice
@@ -59,6 +64,14 @@ resources:
       username: {{DockerHubUsername}}
       password: {{DockerHubPassword}}
 
+  - name: dissertation-image
+    type: docker-image
+    source:
+      repository: glestaris/xetex-gr
+      tag: latest
+      username: {{DockerHubUsername}}
+      password: {{DockerHubPassword}}
+
   - name: ice-registry-cf-deployment
     type: cf
     source:
@@ -68,6 +81,32 @@ resources:
       organization: glestaris-pivotal-org
       space: development
       skip_cert_check: false
+
+  - name: dissertation
+    type: git
+    source:
+      uri: git@bitbucket.org:glestaris/thesis-dissertation.git
+      branch: master
+      private_key: {{BitbucketPrivateKey}}
+
+  - name: dissertation-version
+    type: semver
+    source:
+      driver: s3
+      key: version
+      bucket: glestaris-dissertation
+      region_name: eu-west-1
+      access_key_id: {{DissertationS3AWSAccessKey}}
+      secret_access_key: {{DissertationS3AWSSecretKey}}
+
+  - name: dissertation-pdf
+    type: s3
+    source:
+      bucket: glestaris-dissertation
+      region_name: eu-west-1
+      regexp: thesis-(.*).pdf
+      access_key_id: {{DissertationS3AWSAccessKey}}
+      secret_access_key: {{DissertationS3AWSSecretKey}}
 
 jobs:
   - name: build-ice-ci-image
@@ -87,6 +126,16 @@ jobs:
         params:
           build: .
           dockerfile: ice-agent/Dockerfile
+
+  - name: build-dissertation-image
+    public: true
+    plan:
+      - get: ice-ci
+      - get: dissertation
+      - put: dissertation-image
+        params:
+          build: .
+          dockerfile: dissertation//Dockerfile
 
   - name: run-ice-unit-tests
     public: true
@@ -159,3 +208,32 @@ jobs:
       - task: run-ice-agent-tests
         privileged: true
         file: ice-ci/pipeline/tasks/run-ice-agent-tests.yml
+
+  - name: bump-dissertation-version
+    public: false
+    plan:
+      - get: dissertation
+        trigger: true
+      - get: dissertation-version
+      - get: ice-ci
+      - put: dissertation-version
+        params:
+          pre: rc
+          bump: pre
+
+  - name: build-dissertation
+    public: false
+    plan:
+      - get: dissertation
+        trigger: true
+        passed:
+          - bump-dissertation-version
+      - get: dissertation-version
+        passed:
+          - bump-dissertation-version
+      - get: ice-ci
+      - task: build-dissertation
+        file: ice-ci/pipeline/tasks/build-dissertation.yml
+      - put: dissertation-pdf
+        params:
+          file: dissertation-pdf/thesis-*.pdf
