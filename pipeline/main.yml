@@ -128,7 +128,7 @@ jobs:
           dockerfile: ice-agent/Dockerfile
 
   - name: build-dissertation-image
-    public: true
+    public: false
     plan:
       - get: ice-ci
       - get: dissertation
