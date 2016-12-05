@@ -17,7 +17,7 @@ concourse-web:
     CONCOURSE_LOG_DB_QUERIES: 1
     CONCOURSE_BASIC_AUTH_USERNAME: CHANGE_ME
     CONCOURSE_BASIC_AUTH_PASSWORD: CHANGE_ME
-    CONCOURSE_EXTERNAL_URL: http://ice-ci.g-php.com/
+    CONCOURSE_EXTERNAL_URL: https://ice-ci.g-php.com/
     CONCOURSE_POSTGRES_DATA_SOURCE: |-
       postgres://CHANGE_ME:CHANGE_ME@concourse-db:5432/concourse?sslmode=disable
 
