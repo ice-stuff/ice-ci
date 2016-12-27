@@ -1,8 +1,6 @@
 #!/bin/bash
 set -e
-CONCOURSE_DIR="/opt/ice-ci"
-
-mkdir -p $CONCOURSE_DIR
+CONCOURSE_DIR="/opt/ice-ci/concourse"
 
 pushd $CONCOURSE_DIR
   # Directory structure
