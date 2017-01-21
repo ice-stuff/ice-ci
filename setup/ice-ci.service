@@ -1,0 +1,12 @@
+[Unit]
+Description=iCE CI
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+ExecStart=/opt/ice-ci/ctl run
+ExecStop=/opt/ice-ci/ctl down
+
+[Install]
+WantedBy=multi-user.target
