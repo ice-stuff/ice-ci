@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
-CONCOURSE_DIR="/opt/ice-ci/concourse"
+ICECI_DIR="/opt/ice-ci"
 
-pushd $CONCOURSE_DIR
+pushd $ICECI_DIR
   # Directory structure
   mkdir -p ./data
   mkdir -p ./keys/web

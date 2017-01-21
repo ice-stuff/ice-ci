@@ -29,3 +29,9 @@ concourse-worker:
   volumes: ["./keys/worker:/concourse-keys"]
   environment:
     CONCOURSE_TSA_HOST: concourse-web
+
+concourse-nginx:
+  image: nginx
+  ports: ["80:80", "443:443"]
+  links: [concourse-web]
+  volumes: ["./nginx.conf:/etc/nginx/nginx.conf", "./certs:/etc/certs"]
