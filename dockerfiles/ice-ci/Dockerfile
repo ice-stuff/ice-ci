@@ -1,7 +1,12 @@
 FROM ubuntu:16.04
 
 RUN apt-get update && \
-  apt-get install curl iptables python python-pip -y
+  apt-get install -y \
+    curl iptables \
+    python python-pip \
+    python-dev \
+    build-essential \
+    libssl-dev libffi-dev libxml2-dev libxslt1-dev zlib1g-dev
 
 # From https://github.com/docker-library/docker/blob/master/1.12/Dockerfile
 ENV DOCKER_BUCKET get.docker.com
