@@ -1,5 +1,5 @@
 concourse-db:
-  image: postgres:9.5
+  image: postgres:9.5.7
   volumes: ["./data:/database"]
   environment:
     POSTGRES_DB: concourse
@@ -8,7 +8,7 @@ concourse-db:
     PGDATA: /database
 
 concourse-web:
-  image: concourse/concourse
+  image: concourse/concourse:3.3.3
   links: [concourse-db]
   command: web
   ports: ["127.0.0.1:8080:8080"]
@@ -22,7 +22,7 @@ concourse-web:
       postgres://CHANGE_ME:CHANGE_ME@concourse-db:5432/concourse?sslmode=disable
 
 concourse-worker:
-  image: concourse/concourse
+  image: concourse/concourse:3.3.3
   privileged: true
   links: [concourse-web]
   command: worker
@@ -31,7 +31,7 @@ concourse-worker:
     CONCOURSE_TSA_HOST: concourse-web
 
 concourse-nginx:
-  image: nginx
+  image: nginx:1.13.3
   ports: ["80:80", "443:443"]
   links: [concourse-web]
   volumes: ["./nginx.conf:/etc/nginx/nginx.conf", "./certs:/etc/certs"]
