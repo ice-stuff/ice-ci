@@ -67,7 +67,7 @@ resources:
   - name: dissertation-image
     type: docker-image
     source:
-      repository: glestaris/xetex-gr
+      repository: glestaris/xetex-dissertation-gr
       tag: latest
       username: {{DockerHubUsername}}
       password: {{DockerHubPassword}}
@@ -135,7 +135,7 @@ jobs:
       - put: dissertation-image
         params:
           build: .
-          dockerfile: dissertation//Dockerfile
+          dockerfile: dissertation/Dockerfile
 
   - name: run-ice-unit-tests
     public: true
